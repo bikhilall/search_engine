@@ -17,12 +17,11 @@ MODEL_PATH = os.path.join(FILE_PATH, 'model')
 
 
 class Gusel(Base):
-    def __init__(self, model_path= MODEL_PATH):
+    def __init__(self, model_path=MODEL_PATH):
         self.model_path = model_path
 
     def sent_to_hash(self, sent: str):
         return self.messages_to_vec([sent])
-
 
     def process_to_IDs_in_sparse_format(self, sp, sentences):
         # An utility method that processes sentences with the sentence piece processor
@@ -82,9 +81,42 @@ class Gusel(Base):
 
 if __name__ == '__main__':
     gusel = Gusel()
-    embedings = gusel.messages_to_vec(["I am fat.", "I am very fat.", "I am not fat", "I am thin"])
+    test_cases = [
+        "best places to visit at Bellevue",
+        "Best places to visit in Bellevue are: My home, Your place, and stores",
+        "Here is a list of must go places in Bellevue: school, bus station, and Amin's place",
+        "best travel destinations in Bellevue",
+        "Here is a list of best places to see in Bellevue washington",
+        "Find what to do today, this weekend, or in November. We have reviews of the best places to see in Bellevue. Visit top-rated & must-see attractions.",
 
-    corr = np.inner(embedings, embedings)
-    print(corr)
+        "Square mall is the best place to visit in Bellevue",
+        "did you know that square mall is the best place to visit in Bellevue?",
+        "This article is not about the best places in Bellevue",
 
+        "Bellevue is big and best",
+        "Best foods to eat in bellevue",
+        "I created the best search engine",
+        "best places to visit in Iran",
+        "where is the best place to visit in China?",
+        "Best places to visit in China are: great wall, he's home, and alibaba",
+        
+        "Bellevue is a city in Washington state, across Lake Washington from Seattle. Downtown Park has a large lawn, gardens and a waterfall. Nearby, the Bellevue Arts Museum features craft and design exhibitions, plus a sculpture garden. The Bellevue Botanical Garden highlights Pacific Northwest plants, and includes woodlands and wetlands. KidsQuest Children’s Museum has interactive science, tech and art exhibitions.",
+        'Bellevue is bordered by the cities of Kirkland to the north and Redmond to the northeast along the Overlake and Crossroads neighborhoods.',
+        'Bellevue, WA: What you need to know. Separated from Seattle by Lake Washington, but just a 25-minute drive away, the city of Bellevue offers residents with a small-town vibe and a large assortment of entertainment options',
 
+        "Access a wide and ever-growing collection of extensions and plugins created by the developers and companies that form the Kubernetes community.",
+        "A conformant Kubernetes service allows you to take full advantage of these community offerings and add capabilities such as security, monitoring, management.",
+        "Define complex containerized applications and deploy them globally across a cluster of servers—or even multiple clusters—as Kubernetes optimizes resources according to your desired state.",
+        "With built-in auto-scaler, Kubernetes can easily scale your application horizontally while automatically monitoring and maintaining container health."
+        "Iran is an Islamic republic on the Persian (Arabian) Gulf with historical sites dating to the Persian Empire.",
+        "Extensive marble ruins mark Persepolis, the empire’s capital founded by Darius I in the 6th century B.C.",
+        "Laptop",
+        "I have the best car ever",
+        "give me some food"
+    ]
+
+    embedings = gusel.messages_to_vec(test_cases)
+
+    for i, embeding1 in enumerate(embedings):
+        distance = np.linalg.norm(embedings[0] - embeding1)
+        print(distance, "---------",test_cases[i])
