@@ -101,10 +101,10 @@ def deserialize_model(data, klass):
     """
     instance = klass()
 
-    if not instance.openapi_types:
+    if not instance.swagger_types:
         return data
 
-    for attr, attr_type in six.iteritems(instance.openapi_types):
+    for attr, attr_type in six.iteritems(instance.swagger_types):
         if data is not None \
                 and instance.attribute_map[attr] in data \
                 and isinstance(data, (list, dict)):

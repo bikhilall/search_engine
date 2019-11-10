@@ -5,7 +5,6 @@ from setuptools import setup, find_packages
 
 NAME = "api"
 VERSION = "1.0.0"
-
 # To install the library, run the following
 #
 # python setup.py install
@@ -13,11 +12,7 @@ VERSION = "1.0.0"
 # prerequisite: setuptools
 # http://pypi.python.org/pypi/setuptools
 
-REQUIRES = [
-    "connexion>=2.0.2",
-    "swagger-ui-bundle>=0.0.2",
-    "python_dateutil>=2.6.0"
-]
+REQUIRES = ["connexion"]
 
 setup(
     name=NAME,
@@ -25,10 +20,10 @@ setup(
     description="Sentence Encoder",
     author_email="",
     url="",
-    keywords=["OpenAPI", "Sentence Encoder"],
+    keywords=["Swagger", "Sentence Encoder"],
     install_requires=REQUIRES,
     packages=find_packages(),
-    package_data={'': ['openapi/openapi.yaml']},
+    package_data={'': ['swagger/swagger.yaml']},
     include_package_data=True,
     entry_points={
         'console_scripts': ['api=api.__main__:main']},
@@ -36,4 +31,3 @@ setup(
     This is the sentence encoder interface.
     """
 )
-

@@ -9,9 +9,9 @@ T = typing.TypeVar('T')
 
 
 class Model(object):
-    # openapiTypes: The key is attribute name and the
+    # swaggerTypes: The key is attribute name and the
     # value is attribute type.
-    openapi_types = {}
+    swagger_types = {}
 
     # attributeMap: The key is attribute name and the
     # value is json key in definition.
@@ -29,7 +29,7 @@ class Model(object):
         """
         result = {}
 
-        for attr, _ in six.iteritems(self.openapi_types):
+        for attr, _ in six.iteritems(self.swagger_types):
             value = getattr(self, attr)
             if isinstance(value, list):
                 result[attr] = list(map(

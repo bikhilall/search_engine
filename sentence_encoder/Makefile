@@ -1,8 +1,10 @@
 .PHONY: api/models
 
 api/models:
-	docker run --rm -v ${PWD}:/local openapitools/openapi-generator-cli:v4.2.0 generate \
-    -i /local/api/openapi/openapi.yaml \
-    -g python-flask \
-    -c /local/api/config.json \
-    -o /local
+	docker run --rm -v ${PWD}:/local \
+	swaggerapi/swagger-codegen-cli-v3:3.0.13 generate \
+	-i /local/api/swagger/swagger.yaml \
+	-l python-flask \
+	-o /local/ \
+	--config /local/api/config.json \
+	-Dmodels
