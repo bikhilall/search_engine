@@ -1,0 +1,18 @@
+version: '3'
+services:
+  web:
+    build: ./webpage/
+    ports:
+    - "3001:3001"
+    volumes:
+    - ./webpage:/usr/src/web_app
+    links:
+    - redis
+  encoder:
+    build: ./sentence_encoder/
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./sentence_encoder:/usr/src/app
+  redis:
+    image: redis

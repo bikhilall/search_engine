@@ -1,4 +1,4 @@
-FROM python:3.6-alpine
+FROM tensorflow/tensorflow:1.15.0-py3
 
 RUN mkdir -p /usr/src/app
 WORKDIR /usr/src/app
