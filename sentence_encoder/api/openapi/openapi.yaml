@@ -1,0 +1,55 @@
+openapi: 3.0.0
+info:
+  description: This is the sentence encoder interface.
+  title: Sentence Encoder
+  version: 0.0.0
+servers:
+- url: /
+paths:
+  /encode:
+    post:
+      description: This will encode your list of texts to a list of vectors.
+      operationId: encode_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ListOfTexts'
+        required: true
+      responses:
+        200:
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/TextVector'
+                type: array
+          description: A JSON array text vectors.
+      summary: Returns a list of vectors.
+      x-openapi-router-controller: api.controllers.default_controller
+components:
+  schemas:
+    Vector:
+      items:
+        format: float
+        type: number
+      type: array
+    TextVector:
+      example:
+        vector:
+        - 0.8008282
+        - 0.8008282
+        text: text
+      properties:
+        text:
+          type: string
+        vector:
+          items:
+            format: float
+            type: number
+          type: array
+      type: object
+    ListOfTexts:
+      items:
+        type: string
+      type: array
