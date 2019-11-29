@@ -22,13 +22,13 @@ class Gusel(Base):
         self.model_path = model_path
 
     def encode(self, sentences: List[str]) -> List[float]:
-        vectors= self.messages_to_vec(sentences)
+        embeddings= self.text_to_vec(sentences)
         results = []
         for i, text in enumerate(sentences):
             results.append(
                 {
                     "text": text,
-                    "vector": vectors[i]
+                    "vector": embeddings[i].astype(float)
                 }
             )
         return results
@@ -44,7 +44,7 @@ class Gusel(Base):
         indices = [[row, col] for row in range(len(ids)) for col in range(len(ids[row]))]
         return (values, indices, dense_shape)
 
-    def messages_to_vec(self, messages):
+    def text_to_vec(self, texts):
         module = hub.Module(MODEL_PATH)
 
         input_placeholder = tf.sparse_placeholder(tf.int64, shape=[None, None])
@@ -61,7 +61,7 @@ class Gusel(Base):
         sp.Load(spm_path)
         print("SentencePiece model loaded at {}.".format(spm_path))
 
-        values, indices, dense_shape = self.process_to_IDs_in_sparse_format(sp, messages)
+        values, indices, dense_shape = self.process_to_IDs_in_sparse_format(sp, texts)
 
         # Reduce logging output.
         tf.logging.set_verbosity(tf.logging.ERROR)
@@ -75,7 +75,7 @@ class Gusel(Base):
                            input_placeholder.dense_shape: dense_shape})
 
             for i, message_embedding in enumerate(np.array(message_embeddings).tolist()):
-                print("Message: {}".format(messages[i]))
+                print("Message: {}".format(texts[i]))
                 print("Embedding size: {}".format(len(message_embedding)))
                 message_embedding_snippet = ", ".join(
                     (str(x) for x in message_embedding[:3]))
@@ -125,8 +125,8 @@ if __name__ == '__main__':
         "give me some food"
     ]
 
-    embedings = gusel.messages_to_vec(test_cases)
+    embeddings = gusel.text_to_vec(test_cases)
 
-    for i, embeding1 in enumerate(embedings):
-        distance = np.linalg.norm(embedings[0] - embeding1)
+    for i, embeding1 in enumerate(embeddings):
+        distance = np.linalg.norm(embeddings[0] - embeding1)
         print(distance, "---------",test_cases[i])
