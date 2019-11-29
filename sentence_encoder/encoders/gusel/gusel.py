@@ -28,7 +28,7 @@ class Gusel(Base):
             results.append(
                 {
                     "text": text,
-                    "vector": list(embeddings[i])
+                    "vector": list(embeddings[i].astype(float))
                 }
             )
         return results
