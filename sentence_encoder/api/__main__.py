@@ -2,12 +2,12 @@
 
 import connexion
 
-from api import encoder
+from encoder import JSONEncoder
 
 
 def build_app():
     app = connexion.App(__name__, specification_dir='./swagger/')
-    app.app.json_encoder = encoder.JSONEncoder
+    app.app.json_encoder = JSONEncoder
     app.add_api('swagger.yaml', arguments={'title': 'Sentence Encoder'}, pythonic_params=True)
     return app
 

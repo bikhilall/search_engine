@@ -43,7 +43,7 @@ components:
         text:
           type: string
         vector:
-          $ref: '#/components/schemas/TextVector'
+          $ref: '#/components/schemas/Vector'
       example:
         vector:
         - 0.8008282
