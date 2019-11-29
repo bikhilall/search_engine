@@ -1,1 +1,2 @@
-from .css_spider import CSSSpider
+from .spider import Spider
+from .builder import build_spider
