@@ -1,4 +1,8 @@
-class Base:
+from abc import abstractmethod
+from typing import List
 
-    def sent_to_hash(self, sent: str):
+
+class Base:
+    @abstractmethod
+    def encode(self, sentences: List[str]) -> List[float]:
         pass

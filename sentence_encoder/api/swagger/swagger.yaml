@@ -10,7 +10,7 @@ paths:
     post:
       summary: Returns a list of vectors.
       description: This will encode your list of texts to a list of vectors.
-      operationId: encode_post
+      operationId: encode
       requestBody:
         content:
           application/json:
@@ -32,18 +32,16 @@ paths:
       x-openapi-router-controller: api.controllers.default_controller
 components:
   schemas:
-    Vector:
-      type: array
-      items:
-        type: number
-        format: float
     TextVector:
       type: object
       properties:
         text:
           type: string
         vector:
-          $ref: '#/components/schemas/Vector'
+          type: array
+          items:
+            type: number
+            format: float
       example:
         vector:
         - 0.8008282

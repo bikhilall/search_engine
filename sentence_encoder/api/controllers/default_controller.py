@@ -1,18 +1,10 @@
-import connexion
-import six
-
 from api.models.text_vector import TextVector  # noqa: E501
-from api import util
+from encoders import Gusel
 
 
-def encode_post(body):  # noqa: E501
-    """Returns a list of vectors.
+def encode(body):
+    encoder = Gusel()
+    results = encoder.encode(body)
+    text_vectors = [TextVector(text=r['text'], vector=r['vector']) for r in results]
 
-    This will encode your list of texts to a list of vectors. # noqa: E501
-
-    :param body: 
-    :type body: List[]
-
-    :rtype: List[TextVector]
-    """
-    return 'do some magic!'
+    return text_vectors

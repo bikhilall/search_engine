@@ -10,6 +10,7 @@ import numpy as np
 import tensorflow as tf
 import tensorflow_hub as hub
 import sentencepiece as spm
+from typing import List
 from encoders import Base
 
 FILE_PATH = os.path.dirname(os.path.abspath(__file__))
@@ -20,8 +21,17 @@ class Gusel(Base):
     def __init__(self, model_path=MODEL_PATH):
         self.model_path = model_path
 
-    def sent_to_hash(self, sent: str):
-        return self.messages_to_vec([sent])
+    def encode(self, sentences: List[str]) -> List[float]:
+        vectors= self.messages_to_vec(sentences)
+        results = []
+        for i, text in enumerate(sentences):
+            results.append(
+                {
+                    "text": text,
+                    "vector": vectors[i]
+                }
+            )
+        return results
 
     def process_to_IDs_in_sparse_format(self, sp, sentences):
         # An utility method that processes sentences with the sentence piece processor
