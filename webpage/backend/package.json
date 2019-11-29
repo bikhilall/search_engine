@@ -7,7 +7,6 @@
     "start": "nodemon index.js"
   },
   "author": "Amin",
-  "license": "ISC",
   "dependencies": {
     "express": "^4.17.1"
   },

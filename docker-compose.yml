@@ -2,17 +2,21 @@ version: '3'
 services:
   web:
     build: ./webpage/
+    environment:
+      - ENV=local
     ports:
     - "3001:3001"
     volumes:
     - ./webpage:/usr/src/web_app
-    links:
-    - redis
   encoder:
     build: ./sentence_encoder/
     ports:
       - "8080:8080"
     volumes:
       - ./sentence_encoder:/usr/src/app
-  redis:
-    image: redis
+  crawler:
+    build: ./crawler/
+    environment:
+      - ENCODER_API=encoder:8080
+    links:
+      - encoder
