@@ -23,10 +23,12 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/TextVector'
-                x-content-type: application/json
+                type: object
+                properties:
+                  results:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/TextVector'
       x-openapi-router-controller: api.controllers.default_controller
 components:
   schemas:
@@ -41,10 +43,7 @@ components:
         text:
           type: string
         vector:
-          type: array
-          items:
-            type: number
-            format: float
+          $ref: '#/components/schemas/TextVector'
       example:
         vector:
         - 0.8008282

@@ -1,11 +1,12 @@
 from scrapy.crawler import CrawlerProcess
 import spiders
 import parser
-
+from lib.encoder_api import encode
 
 def page_processor(response):
     page = parser.Page(response)
-    print(page.content[:100])
+    page_vector = encode(page.content[:100])
+
 
 
 def main():

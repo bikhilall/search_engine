@@ -6,6 +6,7 @@ from datetime import date, datetime  # noqa: F401
 from typing import List, Dict  # noqa: F401
 
 from api.models.base_model_ import Model
+from api.models.text_vector import TextVector  # noqa: F401,E501
 from api import util
 
 
@@ -14,17 +15,17 @@ class TextVector(Model):
 
     Do not edit the class manually.
     """
-    def __init__(self, text: str=None, vector: List[float]=None):  # noqa: E501
+    def __init__(self, text: str=None, vector: TextVector=None):  # noqa: E501
         """TextVector - a model defined in Swagger
 
         :param text: The text of this TextVector.  # noqa: E501
         :type text: str
         :param vector: The vector of this TextVector.  # noqa: E501
-        :type vector: List[float]
+        :type vector: TextVector
         """
         self.swagger_types = {
             'text': str,
-            'vector': List[float]
+            'vector': TextVector
         }
 
         self.attribute_map = {
@@ -67,22 +68,22 @@ class TextVector(Model):
         self._text = text
 
     @property
-    def vector(self) -> List[float]:
+    def vector(self) -> TextVector:
         """Gets the vector of this TextVector.
 
 
         :return: The vector of this TextVector.
-        :rtype: List[float]
+        :rtype: TextVector
         """
         return self._vector
 
     @vector.setter
-    def vector(self, vector: List[float]):
+    def vector(self, vector: TextVector):
         """Sets the vector of this TextVector.
 
 
         :param vector: The vector of this TextVector.
-        :type vector: List[float]
+        :type vector: TextVector
         """
 
         self._vector = vector
