@@ -126,7 +126,12 @@ if __name__ == '__main__':
     ]
 
     embeddings = gusel.text_to_vec(test_cases)
+    from matplotlib import pyplot
 
     for i, embeding1 in enumerate(embeddings):
         distance = np.linalg.norm(embeddings[0] - embeding1)
         print(distance, "---------",test_cases[i])
+
+        pyplot.plot(embeding1)
+
+    pyplot.show()
