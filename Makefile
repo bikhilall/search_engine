@@ -3,7 +3,7 @@
 clean:
 	cd core && make clean
 
-run:
+run:build
 	docker-compose up --build
 
 stop:

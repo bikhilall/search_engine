@@ -9,18 +9,24 @@ class Db:
         self._engine = create_engine('sqlite:///file.db')
         self._Session = sessionmaker(bind=self._engine)
 
-    def get_conn(self):
+    def _get_conn(self):
         conn = self._engine.connect()
         return conn
 
+    @classmethod
+    def conn(cls):
+        if not hasattr(cls, '_conn'):
+            cls._conn = cls._get_conn()
+
+        return cls._conn
+
     def execute(self, queries: List) -> List:
-        conn = self.get_conn()
-        trans = conn.begin()
+        trans = self.conn.begin()
         results = []
 
         try:
             for query in queries:
-                results.append(conn.execute(query))
+                results.append(self.conn.execute(query))
             trans.commit()
 
         except Exception as e:
