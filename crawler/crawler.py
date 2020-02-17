@@ -41,6 +41,5 @@ def crawl(urls: List[str]):
 
 if __name__ == '__main__':
     from search_engine_core.db.build import create_all
-
     create_all()
-    crawl(urls=['https://www.wikipedia.org'])
+    crawl(urls=['https://en.wikipedia.org/wiki/Main_Page'])

@@ -10,7 +10,7 @@ def main():
     last_update = datetime(1, 1, 1, tzinfo=pytz.utc)
 
     # Get urls to crawl
-    urls = ['https://www.wikipedia.org']
+    urls = ['https://en.wikipedia.org/wiki/Main_Page']
 
     while datetime.now(tz=pytz.utc) - last_update >= crawl_interval:
         # crawl all Urls
