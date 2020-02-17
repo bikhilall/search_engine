@@ -12,6 +12,10 @@ class Page:
         return self.response.url
 
     @property
+    def title(self):
+        return self.soup.title.string
+
+    @property
     def soup(self):
         if self._soup:
             return self._soup
@@ -27,5 +31,5 @@ class Page:
         if self._content:
             return self._content
         else:
-            self._content = self._soup.get_text()
+            self._content = self.soup.get_text()
             return self._content

@@ -13,12 +13,13 @@ from search_engine_core.db import models as db_models
 def page_processor(response):
     db_interface = db.DbInterface()
     page = parser.Page(response)
-    page_vector = encode(page.content[:100])
+    page_vector = encode(page.content[:1000])
     page_db = db_models.Pages(
         url=page.url,
+        title=page.title,
         vector=page_vector
     )
-    db_interface.merge(page_db)
+    db_interface.merge([page_db])
 
 
 def crawl(urls: List[str]):
@@ -39,4 +40,7 @@ def crawl(urls: List[str]):
 
 
 if __name__ == '__main__':
+    from search_engine_core.db.build import create_all
+
+    create_all()
     crawl(urls=['https://www.wikipedia.org'])
