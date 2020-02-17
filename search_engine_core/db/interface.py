@@ -6,7 +6,7 @@ from sqlalchemy.orm import sessionmaker, Session
 
 class DbInterface:
     def __init__(self, host: str = '0.0.0.0', user: str = 'root', key: str = 'password'):
-        self._engine = create_engine('sqlite:///file.db')
+        self._engine = create_engine('sqlite:///db.db')
         self._Session = sessionmaker(bind=self._engine)
 
     def _get_conn(self):
