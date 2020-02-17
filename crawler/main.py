@@ -4,11 +4,15 @@ from datetime import datetime, timedelta
 import pytz
 from search_engine_core import db
 from search_engine_core.db import models as db_models
+from search_engine_core.config import Config
 
 from crawler import crawl
 
 
 def inititate():
+    # Get Config
+    config = Config()
+    config.read('config.ini')
     # create all tables
     db.create_all()
 
@@ -20,8 +24,12 @@ def inititate():
 
 def main():
     inititate()
+    config = Config()
 
-    crawl_interval = timedelta(days=1)
+    crawl_interval = timedelta(
+        minutes=int(config['settings']['crawl_interval_minutes'])
+    )
+
     last_update = datetime(1, 1, 1, tzinfo=pytz.utc)
 
     # Get urls to crawl
