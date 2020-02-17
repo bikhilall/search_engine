@@ -51,7 +51,7 @@ class DbInterface:
         finally:
             session.close()
 
-    def insert(self, objs: List):
+    def merge(self, objs: List):
         with self.session_scope() as session:
             for obj in objs:
                 session.merge(obj)

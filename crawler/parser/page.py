@@ -4,24 +4,28 @@ from bs4 import BeautifulSoup
 class Page:
     def __init__(self, response):
         self.response = response
-        self.__content = None
-        self.__soup = None
+        self._content = None
+        self._soup = None
 
     @property
-    def _soup(self):
-        if self.__soup:
-            return self.__soup
+    def url(self):
+        return self.response.url
+
+    @property
+    def soup(self):
+        if self._soup:
+            return self._soup
         else:
-            self.__soup = BeautifulSoup(self.response.text)
+            self._soup = BeautifulSoup(self.response.text)
             # kill all script and style elements
-            for script in self.__soup(["script", "style"]):
+            for script in self._soup(["script", "style"]):
                 script.extract()
-            return self.__soup
+            return self._soup
 
     @property
     def content(self):
-        if self.__content:
-            return self.__content
+        if self._content:
+            return self._content
         else:
-            self.__content = self._soup.get_text()
-            return self.__content
+            self._content = self._soup.get_text()
+            return self._content
