@@ -1,6 +1,6 @@
 from sqlalchemy import Column, String, JSON, Integer, DateTime
 from sqlalchemy.sql import func
-from core.db.base import Base
+from search_engine_core.db.models.base import Base
 
 
 class Domaines(Base):
