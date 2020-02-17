@@ -1,6 +1,6 @@
+import os
 from typing import List
 import requests
-from search_engine_core.config import Config
 
 
 class EncoderApi:
@@ -16,6 +16,5 @@ class EncoderApi:
 
 
 def encode(text: str) -> List[float]:
-    config = Config()
-    encoder_api = EncoderApi(base_url=config['encoder']['baseUrl'])
+    encoder_api = EncoderApi(base_url=os.environ['ENCODER_API_BASE_URL'])
     return encoder_api.encode(text)

@@ -5,9 +5,9 @@ services:
     environment:
       - ENV=local
     ports:
-    - "3001:3001"
+      - "3001:3001"
     volumes:
-    - ./webpage:/usr/src/web_app
+      - ./webpage:/usr/src/web_app
   encoder:
     build: ./sentence_encoder/
     ports:
@@ -17,6 +17,6 @@ services:
   crawler:
     build: ./crawler/
     environment:
-      - ENCODER_API=encoder:8080
+      - ENCODER_API_BASE_URL=encoder:8080
     links:
       - encoder
