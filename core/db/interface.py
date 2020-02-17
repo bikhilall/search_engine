@@ -1,7 +1,7 @@
 from typing import List
 from contextlib import contextmanager
 from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker
+from sqlalchemy.orm import sessionmaker, Session
 
 
 class Db:
@@ -35,7 +35,7 @@ class Db:
 
         return results
 
-    def get_session(self):
+    def get_session(self) -> Session:
         return self._Session()
 
     @contextmanager
@@ -51,6 +51,15 @@ class Db:
         finally:
             session.close()
 
-    def run_my_stuff(self):
+    def insert(self, objs: List):
         with self.session_scope() as session:
-            pass
+            for obj in objs:
+                session.merge(obj)
+
+    def bulk_save_objects(self, objs: List):
+        with self.session_scope() as session:
+            session.bulk_save_objects(objs)
+
+    def add(self, obj):
+        with self.session_scope() as session:
+            session.add(obj)
