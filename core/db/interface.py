@@ -4,7 +4,7 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, Session
 
 
-class Db:
+class DbInterface:
     def __init__(self, host: str = '0.0.0.0', user: str = 'root', key: str = 'password'):
         self._engine = create_engine('sqlite:///file.db')
         self._Session = sessionmaker(bind=self._engine)

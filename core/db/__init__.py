@@ -1,1 +1,1 @@
-from .interface import Db
+from .interface import DbInterface
