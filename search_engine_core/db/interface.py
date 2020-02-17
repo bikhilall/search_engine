@@ -39,7 +39,7 @@ class DbInterface:
         return self._Session()
 
     @contextmanager
-    def session_scope(self):
+    def session_scope(self) -> Session:
         """Provide a transactional scope around a series of operations."""
         session = self.get_session()
         try:

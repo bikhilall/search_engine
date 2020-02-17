@@ -1,20 +1,19 @@
-from datetime import datetime, timedelta
 from typing import List
 
-import pytz
 import spiders
 import parser
 from scrapy.crawler import CrawlerProcess
 from lib.encoder_api import encode
 from search_engine_core import db
-from search_engine_core.db import models as db_models
+from search_engine_core.db.models import models as db_models
 
 
-def page_processor(response):
+def page_processor(response, domain, *kws, **kwargs):
     db_interface = db.DbInterface()
     page = parser.Page(response)
     page_vector = encode(page.content[:1000])
     page_db = db_models.Pages(
+        domain_id=domain.id,
         url=page.url,
         title=page.title,
         vector=page_vector
@@ -22,14 +21,16 @@ def page_processor(response):
     db_interface.merge([page_db])
 
 
-def crawl(urls: List[str]):
+def crawl(domains: List[db_models.Domaines], ignore_urls: List[str] = []):
     # build spiders
-    Spider1 = spiders.build_spider(
-        spider=spiders.Spider,
-        name='spider_1',
-        urls=urls,
-        processor=page_processor
-    )
+    for domain in domains:
+        Spider1 = spiders.build_spider(
+            spider=spiders.Spider,
+            name='spider_1',
+            domain=domain,
+            ignore_urls=[],
+            processor=page_processor
+        )
 
     # Start the Crawler Process
     process = CrawlerProcess({
@@ -41,5 +42,6 @@ def crawl(urls: List[str]):
 
 if __name__ == '__main__':
     from search_engine_core.db.build import create_all
+
     create_all()
     crawl(urls=['https://en.wikipedia.org/wiki/Main_Page'])
