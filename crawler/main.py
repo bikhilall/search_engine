@@ -9,7 +9,7 @@ from search_engine_core.config import Config
 from crawler import crawl
 
 
-def inititate():
+def initiate():
     # Get Config
     config = Config()
     config.read('config.ini')
@@ -23,7 +23,7 @@ def inititate():
 
 
 def main():
-    inititate()
+    initiate()
     config = Config()
 
     crawl_interval = timedelta(

@@ -6,8 +6,8 @@ __pycache__
 # Environments
 .env
 .venv
+db_data
 env/
 venv/
 dist
-crawler/search_engine_core
 *.egg-info

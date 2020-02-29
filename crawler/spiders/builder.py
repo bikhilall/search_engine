@@ -1,4 +1,3 @@
-from typing import List
 from scrapy import Spider
 from search_engine_core.db.models import models as db_models
 

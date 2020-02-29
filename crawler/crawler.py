@@ -46,7 +46,7 @@ def crawl(domains: List[db_models.Domaines], ignore_urls: List[str] = []):
 
 
 if __name__ == '__main__':
-    from search_engine_core.db.build import create_all
+    from search_engine_core.db import create_all
 
     db_interface = db.DbInterfaceSingleton(local=True)
     create_all()

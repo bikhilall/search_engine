@@ -1,7 +1,8 @@
 .PHONY: run
 
 clean:
-	cd search_engine_core && make clean
+	cd core && make clean
+	cd crawler && make clean
 
 run:build
 	docker-compose up --build
@@ -12,7 +13,7 @@ stop:
 build: build-core build-crawler
 
 build-core:
-	cd search_engine_core && make dist
+	cd core && make dist
 
 build-crawler:
 	cd crawler && make build
@@ -20,4 +21,4 @@ build-crawler:
 install: install-core
 
 install-core: build-core
-	pip3 install --no-cache-dir ./search_engine_core/dist/*
+	pip3 install ./core/dist/*
