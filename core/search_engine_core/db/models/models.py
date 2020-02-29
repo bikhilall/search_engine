@@ -5,20 +5,16 @@ from .base import Base
 
 class Domaines(Base):
     __tablename__ = 'domains'
-    id = Column(Integer, autoincrement=True)
-    url = Column(String(100), primary_key=True)
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    url = Column(String(100), unique=True)
 
 
 class Pages(Base):
     __tablename__ = 'pages'
     id = Column(Integer, primary_key=True, autoincrement=True)
     domain_id = Column(
-        Integer,
-        ForeignKey(
-            'domains.id',
-            onupdate="CASCADE",
-            ondelete="CASCADE"
-        )
+        # ForeignKey(Domaines.id,onupdate="CASCADE",ondelete="CASCADE")
+        Integer
     )
     url = Column(String(1000), nullable=False)
     language = Column(String(50))

@@ -14,11 +14,11 @@ def initiate():
     config = Config()
     config.read('config.ini')
     # create all tables
+    db_interface = db.DbInterfaceSingleton(host='mysql')
     db.create_all()
 
     # Add some domains to db
     domain = db_models.Domaines(url='https://en.wikipedia.org/wiki/Main_Page')
-    db_interface = db.DbInterfaceSingleton()
     db_interface.merge([domain])
 
 

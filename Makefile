@@ -10,7 +10,7 @@ run:build
 stop:
 	docker-compose down
 
-build: build-core build-crawler
+build: clean build-core build-crawler
 
 build-core:
 	cd core && make dist
