@@ -9,4 +9,5 @@ __pycache__
 env/
 venv/
 dist
+crawler/search_engine_core
 *.egg-info
