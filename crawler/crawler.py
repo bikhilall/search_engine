@@ -9,7 +9,7 @@ from search_engine_core.db.models import models as db_models
 
 
 def page_processor(response, domain, *kws, **kwargs):
-    db_interface = db.DbInterface()
+    db_interface = db.DbInterfaceSingleton()
     page = parser.Page(response)
     page_vector = encode(page.content[:1000])
     page_db = db_models.Pages(
@@ -23,25 +23,32 @@ def page_processor(response, domain, *kws, **kwargs):
 
 def crawl(domains: List[db_models.Domaines], ignore_urls: List[str] = []):
     # build spiders
-    for domain in domains:
-        Spider1 = spiders.build_spider(
+    active_spiders = [
+        spiders.build_spider(
             spider=spiders.Spider,
-            name='spider_1',
+            name=f'spider_{domain.id}',
             domain=domain,
             ignore_urls=[],
             processor=page_processor
         )
+        for domain in domains
+    ]
 
     # Start the Crawler Process
     process = CrawlerProcess({
         'USER_AGENT': 'Mozilla/4.0 (compatible; MSIE 7.0; Windows NT 5.1)'
     })
-    process.crawl(Spider1)
+
+    for SpiderClass in active_spiders:
+        process.crawl(SpiderClass)
+
     process.start()  # the script will block here until crawling is finished
 
 
 if __name__ == '__main__':
     from search_engine_core.db.build import create_all
 
+    db_interface = db.DbInterfaceSingleton(local=True)
     create_all()
-    crawl(urls=['https://en.wikipedia.org/wiki/Main_Page'])
+
+    crawl(domains=[db_models.Domaines(id=1, url='https://en.wikipedia.org/wiki/Main_Page')])

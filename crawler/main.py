@@ -18,7 +18,7 @@ def inititate():
 
     # Add some domains to db
     domain = db_models.Domaines(url='https://en.wikipedia.org/wiki/Main_Page')
-    db_interface = db.DbInterface()
+    db_interface = db.DbInterfaceSingleton()
     db_interface.merge([domain])
 
 

@@ -1,7 +1,7 @@
 from .models.models import Base
-from .interface import DbInterface
+from .interface import DbInterfaceSingleton
 
 
 def create_all():
-    db = DbInterface()
+    db = DbInterfaceSingleton()
     Base.metadata.create_all(db._engine)

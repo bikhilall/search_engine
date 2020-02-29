@@ -8,15 +8,32 @@ services:
       - "3001:3001"
     volumes:
       - ./webpage:/usr/src/web_app
+
   encoder:
     build: ./sentence_encoder/
     ports:
       - "8080:8080"
     volumes:
       - ./sentence_encoder:/usr/src/app
+
   crawler:
     build: ./crawler/
     environment:
       - ENCODER_API_BASE_URL=encoder:8080
     links:
       - encoder
+
+  mysql:
+    image: mysql:5.7
+    restart: always
+    environment:
+      MYSQL_DATABASE: 'search_engine'
+      MYSQL_USER: 'user'
+      MYSQL_PASSWORD: 'password'
+      MYSQL_ROOT_PASSWORD: 'password'
+    ports:
+      - '3306:3306'
+    expose:
+      - '3306'
+    volumes:
+      - ./db_data:/var/lib/mysql

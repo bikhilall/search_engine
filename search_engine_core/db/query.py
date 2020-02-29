@@ -1,10 +1,9 @@
 from .models.models import Pages, Domaines
-from .interface import DbInterface
-
-db_interface = DbInterface()
+from .interface import DbInterfaceSingleton
 
 
 def query_pages(domain: str):
+    db_interface = DbInterfaceSingleton()
     with db_interface.session_scope() as session:
         data = session.query(
             Pages
@@ -15,6 +14,7 @@ def query_pages(domain: str):
 
 
 def query_domains():
+    db_interface = DbInterfaceSingleton()
     with db_interface.session_scope() as session:
         data = session.query(
             Domaines

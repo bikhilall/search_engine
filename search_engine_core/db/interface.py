@@ -5,8 +5,14 @@ from sqlalchemy.orm import sessionmaker, Session
 
 
 class DbInterface:
-    def __init__(self, host: str = '0.0.0.0', user: str = 'root', key: str = 'password'):
-        self._engine = create_engine('sqlite:///db.db')
+    def __init__(self, driver: str = 'mysql+pymysql', host: str = 'mysql', schema: str = 'search_engine',
+                 user: str = 'user', password: str = 'password', port: int = 3306, local: bool = False):
+        if local:
+            url = 'sqlite:///db.db'
+        else:
+            url = f'{driver}://{user}:{password}@{host}:{port}/{schema}'
+
+        self._engine = create_engine(url)
         self._Session = sessionmaker(bind=self._engine)
 
     def _get_conn(self):
@@ -63,3 +69,19 @@ class DbInterface:
     def add(self, obj):
         with self.session_scope() as session:
             session.add(obj)
+
+
+class DbInterfaceSingleton:
+    instance = None
+
+    def __new__(cls, *args, **kwargs):
+        """ __new__ is Always a class method. """
+        if not cls.instance:
+            cls.instance = DbInterface(*args, **kwargs)
+        return cls.instance
+
+    def __getattr__(self, name):
+        return getattr(self.instance, name)
+
+    def __setattr__(self, name):
+        return setattr(self.instance, name)
