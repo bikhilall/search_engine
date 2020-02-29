@@ -39,6 +39,10 @@ setuptools.setup(
     long_description=long_description,
     long_description_content_type="text/markdown",
     packages=create_package_list('search_engine_core'),
+    install_requires=[
+        'PyMySQL==0.9.3',
+        'SQLAlchemy==1.3.13'
+    ],
     classifiers=[
         "Programming Language :: Python :: 3",
         "Operating System :: OS Independent",
