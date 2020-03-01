@@ -9,6 +9,11 @@ services:
     volumes:
       - ./webpage:/usr/src/web_app
 
+  querier:
+    build: ./querier/
+    ports:
+      - "8080:8080"
+
   encoder:
     build: ./sentence_encoder/
     ports:
