@@ -1,5 +1,11 @@
-from api.models.web_page import WebPage  # noqa: E501
+from api.models.web_page import WebPage
+from app.queriers import SimpleQuerier
+from api.trabslators import DbToApi
 
+querier = SimpleQuerier()
 
 def query(body):
-    return WebPage(url='test_url', title='test_title')
+    page_db = querier.get(body)
+    db_to_api = DbToApi()
+    page_api = db_to_api.page(page_db)
+    return page_api
