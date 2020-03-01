@@ -6,6 +6,7 @@ https://tfhub.dev/google/universal-sentence-encoder-lite/2?tf-hub-format=compres
 MODEL_PATH = https://tfhub.dev/google/universal-sentence-encoder-lite/2
 """
 import os
+import logging
 import numpy as np
 import tensorflow as tf
 import tensorflow_hub as hub
@@ -59,7 +60,7 @@ class Gusel(Base):
 
         sp = spm.SentencePieceProcessor()
         sp.Load(spm_path)
-        print("SentencePiece model loaded at {}.".format(spm_path))
+        logging.info("SentencePiece model loaded at {}.".format(spm_path))
 
         values, indices, dense_shape = self.process_to_IDs_in_sparse_format(sp, texts)
 
@@ -75,11 +76,11 @@ class Gusel(Base):
                            input_placeholder.dense_shape: dense_shape})
 
             for i, message_embedding in enumerate(np.array(message_embeddings).tolist()):
-                print("Message: {}".format(texts[i]))
-                print("Embedding size: {}".format(len(message_embedding)))
+                logging.debug("Message: {}".format(texts[i]))
+                logging.debug("Embedding size: {}".format(len(message_embedding)))
                 message_embedding_snippet = ", ".join(
                     (str(x) for x in message_embedding[:3]))
-                print("Embedding: [{}, ...]\n".format(message_embedding_snippet))
+                logging.debug("Embedding: [{}, ...]\n".format(message_embedding_snippet))
 
         return message_embeddings
         # The following are example embedding output of 512 dimensions per sentence

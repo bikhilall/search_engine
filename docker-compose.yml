@@ -20,7 +20,7 @@ services:
     build: ./crawler/
     restart: always
     environment:
-      - ENCODER_API_BASE_URL=encoder:8080
+      - ENCODER_API_BASE_URL=http://encoder:8080
     links:
       - encoder
       - mysql
