@@ -1,4 +1,5 @@
 connexion == 2.2.0
+Werkzeug==0.16.1
 python_dateutil == 2.6.0
 sentencepiece == 0.1.83
 tensorflow == 1.15
