@@ -1,3 +1,4 @@
 connexion == 2.2.0
 Werkzeug==0.16.1
 numpy==1.18.1
+pytz==2019.3

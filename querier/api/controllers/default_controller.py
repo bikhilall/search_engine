@@ -1,6 +1,6 @@
 from api.models.web_page import WebPage
 from app.queriers import SimpleQuerier
-from api.trabslators import DbToApi
+from api.translators import DbToApi
 
 querier = SimpleQuerier()
 

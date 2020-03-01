@@ -41,7 +41,8 @@ setuptools.setup(
     packages=create_package_list('search_engine_core'),
     install_requires=[
         'mysql-connector-python==8.0.19',
-        'SQLAlchemy==1.3.13'
+        'SQLAlchemy==1.3.13',
+        'pytz==2019.3'
     ],
     classifiers=[
         "Programming Language :: Python :: 3",

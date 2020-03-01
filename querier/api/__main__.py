@@ -2,7 +2,7 @@
 
 import connexion
 
-from .encoder import JSONEncoder
+from api.encoder import JSONEncoder
 
 
 def build_app():
