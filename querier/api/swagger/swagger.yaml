@@ -10,12 +10,12 @@ paths:
     get:
       summary: Returns a page.
       operationId: query
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/Text'
-        required: true
+      parameters:
+        - in: query
+          name: text
+          required: true
+          schema:
+            type: string
       responses:
         200:
           description: A webpage.
@@ -33,6 +33,3 @@ components:
           type: string
         title:
           type: string
-    Text:
-      type: string
-
