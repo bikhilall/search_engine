@@ -1,0 +1,38 @@
+openapi: 3.0.0
+info:
+  title: Querier
+  description: This is querier interface.
+  version: 0.0.1
+servers:
+- url: /
+paths:
+  /query:
+    get:
+      summary: Returns a page.
+      operationId: query
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Text'
+        required: true
+      responses:
+        200:
+          description: A webpage.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WebPage'
+      x-openapi-router-controller: api.controllers.default_controller
+components:
+  schemas:
+    WebPage:
+      type: object
+      properties:
+        url:
+          type: string
+        title:
+          type: string
+    Text:
+      type: string
+
