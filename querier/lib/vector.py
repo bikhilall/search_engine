@@ -1,5 +1,5 @@
 from typing import List
-import numpy
+import numpy as np
 from search_engine_core.db.models import Pages as DbPage
 
 
@@ -8,7 +8,7 @@ def find_similar_page(vector: List[float], pages: List[DbPage]) -> DbPage:
     shortest_distance = float('inf')
 
     for page in pages:
-        distance = numpy.linalg.norm(vector - page.vector)
+        distance = np.linalg.norm(np.asarray(vector) - np.asarray(page.vector))
 
         if distance < shortest_distance:
             similar_page = page
