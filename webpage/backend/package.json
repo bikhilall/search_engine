@@ -8,7 +8,8 @@
   },
   "author": "Amin",
   "dependencies": {
-    "express": "4.17.1"
+    "express": "4.17.1",
+    "nodemon": "1.18.11"
   },
   "devDependencies": {
     "nodemon": "1.18.11"

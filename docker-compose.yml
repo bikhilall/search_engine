@@ -11,15 +11,22 @@ services:
 
   querier:
     build: ./querier/
+    restart: always
+    environment:
+      - ENCODER_API_BASE_URL=http://encoder:8080
     ports:
       - "8080:8081"
+    links:
+      - encoder
+      - mysql
+    depends_on:
+      - mysql
+      - encoder
 
   encoder:
     build: ./sentence_encoder/
     ports:
       - "8080:8080"
-    volumes:
-      - ./sentence_encoder:/usr/src/app
 
   crawler:
     build: ./crawler/
