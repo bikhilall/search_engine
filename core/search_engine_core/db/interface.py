@@ -5,8 +5,8 @@ from sqlalchemy.orm import sessionmaker, Session
 
 
 class DbInterface:
-    def __init__(self, driver: str = 'mysql+pymysql', host: str = 'mysql', schema: str = 'search_engine',
-                 user: str = 'user', password: str = 'password', port: int = 3306, local: bool = False):
+    def __init__(self, driver: str = 'mysql+mysqlconnector', host: str = 'mysql', schema: str = 'search_engine',
+                 user: str = 'root', password: str = 'password', port: int = 3306, local: bool = False):
         if local:
             url = 'sqlite:///db.db'
         else:

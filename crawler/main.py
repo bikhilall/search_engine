@@ -18,8 +18,10 @@ def initiate():
     db.create_all()
 
     # Add some domains to db
-    domain = db_models.Domaines(url='https://en.wikipedia.org/wiki/Main_Page')
-    db_interface.merge([domain])
+    domains = db.query.query_domains()
+    if not domains:
+        domain = db_models.Domaines(url='https://en.wikipedia.org/wiki/Main_Page')
+        db_interface.merge([domain])
 
 
 def main():
@@ -38,7 +40,7 @@ def main():
     while datetime.now(tz=pytz.utc) - last_update >= crawl_interval:
         # crawl all Urls
         crawl(domains)
-        time.sleep(1)
+        last_update = datetime.now(tz=pytz.utc)
 
 
 if __name__ == '__main__':

@@ -4,7 +4,7 @@ clean:
 	cd core && make clean
 	cd crawler && make clean
 
-run:build
+run:
 	docker-compose up --build
 
 stop:

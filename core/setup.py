@@ -40,7 +40,7 @@ setuptools.setup(
     long_description_content_type="text/markdown",
     packages=create_package_list('search_engine_core'),
     install_requires=[
-        'PyMySQL==0.9.3',
+        'mysql-connector-python==8.0.19',
         'SQLAlchemy==1.3.13'
     ],
     classifiers=[

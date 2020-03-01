@@ -1,4 +1,4 @@
-from sqlalchemy import Column, String, JSON, Integer, DateTime, ForeignKey
+from sqlalchemy import Column, String, JSON, Integer, DateTime, ForeignKey, UniqueConstraint
 from sqlalchemy.sql import func
 from .base import Base
 
@@ -11,12 +11,13 @@ class Domaines(Base):
 
 class Pages(Base):
     __tablename__ = 'pages'
-    id = Column(Integer, primary_key=True, autoincrement=True)
+    url = Column(String(1000), primary_key=True)
     domain_id = Column(
-        # ForeignKey(Domaines.id,onupdate="CASCADE",ondelete="CASCADE")
-        Integer
+        Integer,
+        ForeignKey(Domaines.id, onupdate="CASCADE", ondelete="CASCADE"),
+        nullable=False
     )
-    url = Column(String(1000), nullable=False)
+
     language = Column(String(50))
     vector = Column(JSON(), nullable=False)
     title = Column(String(100), nullable=False)
