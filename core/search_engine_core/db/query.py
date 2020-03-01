@@ -2,11 +2,13 @@ from .models.models import Pages, Domaines
 from .interface import DbInterfaceSingleton
 
 
-def query_pages(domain: str):
+def query_pages(domain: Domaines):
     db_interface = DbInterfaceSingleton()
     with db_interface.session_scope() as session:
         data = session.query(
             Pages
+        ).filter(
+            Pages.domain_id == domain.id
         ).all()
         session.expunge_all()
 

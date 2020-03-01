@@ -1,5 +1,6 @@
-from sqlalchemy import Column, String, JSON, Integer, DateTime, ForeignKey, UniqueConstraint
-from sqlalchemy.sql import func
+from datetime import datetime
+import pytz
+from sqlalchemy import Column, String, JSON, Integer, DateTime, ForeignKey
 from .base import Base
 
 
@@ -21,4 +22,4 @@ class Pages(Base):
     language = Column(String(50))
     vector = Column(JSON(), nullable=False)
     title = Column(String(100), nullable=False)
-    update_datetime = Column(DateTime(timezone=True), default=func.now())
+    update_datetime = Column(DateTime(timezone=True), default=datetime.now(tz=pytz.utc))

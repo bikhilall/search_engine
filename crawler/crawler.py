@@ -1,5 +1,7 @@
 from typing import List
+from datetime import datetime, timedelta
 
+import pytz
 import spiders
 import parser
 from scrapy.crawler import CrawlerProcess
@@ -23,16 +25,23 @@ def page_processor(response, domain, *kws, **kwargs):
 
 def crawl(domains: List[db_models.Domaines], ignore_urls: List[str] = []):
     # build spiders
-    active_spiders = [
-        spiders.build_spider(
-            spider=spiders.Spider,
-            name=f'spider_{domain.id}',
-            domain=domain,
-            ignore_urls=[],
-            processor=page_processor
+    active_spiders = []
+    for domain in domains:
+        visited_pages = db.query.query_pages(domain)
+        ignore_urls = [
+            page.url
+            for page in visited_pages
+            # if page.update_datetime < datetime.now(tz=pytz.utc) - timedelta(days=2)
+        ]
+        active_spiders.append(
+            spiders.build_spider(
+                spider=spiders.Spider,
+                name=f'spider_{domain.id}',
+                domain=domain,
+                ignore_urls=ignore_urls,
+                processor=page_processor
+            )
         )
-        for domain in domains
-    ]
 
     # Start the Crawler Process
     process = CrawlerProcess({
