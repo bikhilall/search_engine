@@ -5,7 +5,7 @@ from api.translators import DbToApi
 querier = SimpleQuerier()
 
 def query(text):
-    page_db = querier.get(text)
+    pages_db = querier.get(text)
     db_to_api = DbToApi()
-    page_api = db_to_api.page(page_db)
-    return page_api
+    pages_api = db_to_api.pages(pages_db)
+    return pages_api

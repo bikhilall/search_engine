@@ -1,6 +1,6 @@
 import unittest
 from search_engine_core.db.models import Pages as DbPage
-from lib.vector import find_similar_page
+from lib.vector import find_similar_pages
 
 
 class VectorTest(unittest.TestCase):
@@ -13,7 +13,7 @@ class VectorTest(unittest.TestCase):
             DbPage(url='page4', vector=[0, 0, 0]),
             DbPage(url='page5', vector=[1, 1, 3])
         ]
-        page = find_similar_page(vector=[1, 2, 3], pages=pages)
+        similar_pages = find_similar_pages(vector=[1, 2, 3], pages=pages)
 
 
 if __name__ == '__main__':

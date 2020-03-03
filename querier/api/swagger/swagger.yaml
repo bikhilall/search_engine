@@ -22,10 +22,14 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/WebPage'
+                $ref: '#/components/schemas/ListOfWebPages'
       x-openapi-router-controller: api.controllers.default_controller
 components:
   schemas:
+    ListOfWebPages:
+      type: array
+      items:
+        $ref: '#/components/schemas/WebPage'
     WebPage:
       type: object
       properties:

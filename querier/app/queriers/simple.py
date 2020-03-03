@@ -1,19 +1,20 @@
+from typing import List
 from search_engine_core import db
 from search_engine_core.db.models import Pages as DbPages
 
 from lib.encoder_api import encode
-from lib.vector import find_similar_page
+from lib.vector import find_similar_pages
 from search_engine_core.db.models import Pages as DbPage
 from .base import Querier
 
 
 class SimpleQuerier(Querier):
 
-    def get(self, text: str) -> DbPage:
+    def get(self, text: str) -> List[DbPage]:
         vector = encode(text=text)
-        pages = self._query_all_pages_cached()
-        similar_page = find_similar_page(vector=vector, pages=pages)
-        return similar_page
+        pages = self._query_all_pages()
+        similar_pages = find_similar_pages(vector=vector, pages=pages)
+        return similar_pages
 
     def _query_all_pages_cached(self):
         if not hasattr(self, '_db_pages_cache'):

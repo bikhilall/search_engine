@@ -20,6 +20,7 @@ class Pages(Base):
     )
 
     language = Column(String(50))
-    vector = Column(JSON(), nullable=False)
+    title_vector = Column(JSON(), nullable=False)
+    content_vector = Column(JSON(), nullable=False)
     title = Column(String(100), nullable=False)
     update_datetime = Column(DateTime(timezone=True), default=datetime.now(tz=pytz.utc))
