@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 import connexion
-
+from search_engine_core import db
 from api.encoder import JSONEncoder
 
 
@@ -14,5 +14,6 @@ def build_app():
 
 
 if __name__ == '__main__':
+    db.DbInterfaceSingleton()
     app = build_app()
     app.run(port=8081)

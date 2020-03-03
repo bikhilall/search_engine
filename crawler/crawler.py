@@ -1,7 +1,6 @@
+import os
 from typing import List
-from datetime import datetime, timedelta
 
-import pytz
 import spiders
 import parser
 from scrapy.crawler import CrawlerProcess
