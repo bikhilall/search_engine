@@ -8,12 +8,15 @@ from lib.encoder_api import encode, EncoderApi
 from search_engine_core import db
 from search_engine_core.db.models import models as db_models
 
+db_interface = db.DbInterfaceSingleton()
+
+
 def encode_all(texts: List[str]) -> List[float]:
     encoder_api = EncoderApi(base_url=os.environ['ENCODER_API_BASE_URL'])
     return encoder_api.encode(texts)
 
+
 def page_processor(response, domain, *kws, **kwargs):
-    db_interface = db.DbInterfaceSingleton()
     page = parser.Page(response)
     content_vector = encode(page.content[:1000])
     title_vector = encode(page.title)
