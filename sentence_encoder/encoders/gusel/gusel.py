@@ -20,10 +20,22 @@ MODEL_PATH = os.path.join(FILE_PATH, 'model')
 
 class Gusel(Base):
     def __init__(self, model_path=MODEL_PATH):
-        self.model_path = model_path
+        # Reduce logging output.
+        tf.logging.set_verbosity(tf.logging.ERROR)
+        self._model_path = model_path
+        self.module = hub.Module(self._model_path)
+        self.build_sp()
+        self._input_placeholder = tf.sparse_placeholder(tf.int64, shape=[None, None])
+        self._encodings = self.module(
+            inputs=dict(
+                values=self._input_placeholder.values,
+                indices=self._input_placeholder.indices,
+                dense_shape=self._input_placeholder.dense_shape
+            )
+        )
 
     def encode(self, sentences: List[str]) -> List[float]:
-        embeddings= self.text_to_vec(sentences)
+        embeddings = self.text_to_vec(sentences)
         results = []
         for i, text in enumerate(sentences):
             results.append(
@@ -34,63 +46,44 @@ class Gusel(Base):
             )
         return results
 
-    def process_to_IDs_in_sparse_format(self, sp, sentences):
+    def process_to_IDs_in_sparse_format(self, sentences):
         # An utility method that processes sentences with the sentence piece processor
         # 'sp' and returns the results in tf.SparseTensor-similar format:
         # (values, indices, dense_shape)
-        ids = [sp.EncodeAsIds(x) for x in sentences]
+        ids = [self._sp.EncodeAsIds(x) for x in sentences]
         max_len = max(len(x) for x in ids)
         dense_shape = (len(ids), max_len)
         values = [item for sublist in ids for item in sublist]
         indices = [[row, col] for row in range(len(ids)) for col in range(len(ids[row]))]
         return (values, indices, dense_shape)
 
-    def text_to_vec(self, texts):
-        module = hub.Module(MODEL_PATH)
-
-        input_placeholder = tf.sparse_placeholder(tf.int64, shape=[None, None])
-        encodings = module(
-            inputs=dict(
-                values=input_placeholder.values,
-                indices=input_placeholder.indices,
-                dense_shape=input_placeholder.dense_shape))
-
+    def build_sp(self):
         with tf.Session() as sess:
-            spm_path = sess.run(module(signature="spm_path"))
+            spm_path = sess.run(self.module(signature="spm_path"))
 
         sp = spm.SentencePieceProcessor()
         sp.Load(spm_path)
         logging.info("SentencePiece model loaded at {}.".format(spm_path))
+        self._sp = sp
 
-        values, indices, dense_shape = self.process_to_IDs_in_sparse_format(sp, texts)
-
-        # Reduce logging output.
-        tf.logging.set_verbosity(tf.logging.ERROR)
-
+    def text_to_vec(self, texts):
         with tf.Session() as session:
             session.run([tf.global_variables_initializer(), tf.tables_initializer()])
+            values, indices, dense_shape = self.process_to_IDs_in_sparse_format(texts)
             message_embeddings = session.run(
-                encodings,
-                feed_dict={input_placeholder.values: values,
-                           input_placeholder.indices: indices,
-                           input_placeholder.dense_shape: dense_shape})
-
-            for i, message_embedding in enumerate(np.array(message_embeddings).tolist()):
-                logging.debug("Message: {}".format(texts[i]))
-                logging.debug("Embedding size: {}".format(len(message_embedding)))
-                message_embedding_snippet = ", ".join(
-                    (str(x) for x in message_embedding[:3]))
-                logging.debug("Embedding: [{}, ...]\n".format(message_embedding_snippet))
+                self._encodings,
+                feed_dict={
+                    self._input_placeholder.values: values,
+                    self._input_placeholder.indices: indices,
+                    self._input_placeholder.dense_shape: dense_shape
+                }
+            )
 
         return message_embeddings
-        # The following are example embedding output of 512 dimensions per sentence
-        # Embedding for: The quick brown fox jumps over the lazy dog.
-        # [0.0560572519898, 0.0534118898213, -0.0112254749984, ...]
-        # Embedding for: I am a sentence for which I would like to get its embedding.
-        # [-0.0343746766448, -0.0529498048127, 0.0469399243593, ...]
 
 
 if __name__ == '__main__':
+    logging.basicConfig(level=logging.INFO)
     gusel = Gusel()
     test_cases = [
         "best places to visit at Bellevue",
@@ -110,7 +103,7 @@ if __name__ == '__main__':
         "best places to visit in Iran",
         "where is the best place to visit in China?",
         "Best places to visit in China are: great wall, he's home, and alibaba",
-        
+
         "Bellevue is a city in Washington state, across Lake Washington from Seattle. Downtown Park has a large lawn, gardens and a waterfall. Nearby, the Bellevue Arts Museum features craft and design exhibitions, plus a sculpture garden. The Bellevue Botanical Garden highlights Pacific Northwest plants, and includes woodlands and wetlands. KidsQuest Children’s Museum has interactive science, tech and art exhibitions.",
         'Bellevue is bordered by the cities of Kirkland to the north and Redmond to the northeast along the Overlake and Crossroads neighborhoods.',
         'Bellevue, WA: What you need to know. Separated from Seattle by Lake Washington, but just a 25-minute drive away, the city of Bellevue offers residents with a small-town vibe and a large assortment of entertainment options',
@@ -126,12 +119,12 @@ if __name__ == '__main__':
         "give me some food"
     ]
 
-    embeddings = gusel.text_to_vec(test_cases)
+    embeddings = [gusel.text_to_vec([t]) for t in test_cases]
     from matplotlib import pyplot
 
     for i, embeding1 in enumerate(embeddings):
         distance = np.linalg.norm(embeddings[0] - embeding1)
-        print(distance, "---------",test_cases[i])
+        print(distance, "---------", test_cases[i])
 
         pyplot.plot(embeding1)
 
