@@ -21,6 +21,15 @@ services:
       - mysql
       - encoder
 
+  dash:
+    build: ./dash_app/
+    environment:
+      - QUERIER_API_BASE_URL=http://querier:8080
+    ports:
+      - "8084:8084"
+    links:
+      - querier
+
   encoder:
     build: ./sentence_encoder/
     ports:
