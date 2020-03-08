@@ -24,9 +24,9 @@ services:
   dash:
     build: ./dash_app/
     environment:
-      - QUERIER_API_BASE_URL=http://querier:8080
+      - QUERIER_API_BASE_URL=http://querier:8081
     ports:
-      - "8084:8084"
+      - "8050:8050"
     links:
       - querier
 

@@ -62,4 +62,4 @@ def querier_res_to_components(res: List):
 
 
 if __name__ == '__main__':
-    app.run_server(debug=False, port=8084)
+    app.run_server(debug=False,host= "0.0.0.0", port=8050)
