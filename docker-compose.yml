@@ -6,8 +6,6 @@ services:
       - ENV=local
     ports:
       - "3001:3001"
-    volumes:
-      - ./webpage:/usr/src/web_app
 
   querier:
     build: ./querier/

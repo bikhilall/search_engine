@@ -1,15 +1,16 @@
 {
   "name": "backend",
-  "version": "1.0.0",
-  "description": "This is our webpage backend",
+  "version": "0.0.1",
+  "description": "This is the webpage backend",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon index.js"
+    "start": "node index.js"
   },
   "author": "Amin",
   "dependencies": {
+    "cd": "^0.3.3",
     "express": "4.17.1",
-    "nodemon": "1.18.11"
+    "frontend": "^2.0.0-alpha.4"
   },
   "devDependencies": {
     "nodemon": "1.18.11"
