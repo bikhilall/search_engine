@@ -6,6 +6,13 @@ info:
 servers:
 - url: /
 paths:
+  /health:
+    get:
+      operationId: health
+      x-openapi-router-controller: api.controllers.default_controller
+      responses:
+        '200':
+          description: OK
   /encode:
     post:
       summary: Returns a list of vectors.

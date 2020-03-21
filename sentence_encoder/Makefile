@@ -8,3 +8,7 @@ api/models:
 	-o /local/ \
 	--config /local/api/config.json \
 	-Dmodels
+
+run:
+	docker image build -t encoder .
+	docker container run -p 8080:8080 encoder

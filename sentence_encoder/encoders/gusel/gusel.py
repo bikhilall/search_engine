@@ -24,6 +24,7 @@ class Gusel(Base):
         tf.logging.set_verbosity(tf.logging.ERROR)
         self._model_path = model_path
         self.module = hub.Module(self._model_path)
+        self._graph = tf.get_default_graph()
         self.build_sp()
         self._input_placeholder = tf.sparse_placeholder(tf.int64, shape=[None, None])
         self._encodings = self.module(
@@ -41,7 +42,7 @@ class Gusel(Base):
             results.append(
                 {
                     "text": text,
-                    "vector": list(embeddings[i].astype(float))
+                    "vector": [round(x, 4) for x in embeddings[i].astype(float)]
                 }
             )
         return results
@@ -67,17 +68,18 @@ class Gusel(Base):
         self._sp = sp
 
     def text_to_vec(self, texts):
-        with tf.Session() as session:
-            session.run([tf.global_variables_initializer(), tf.tables_initializer()])
-            values, indices, dense_shape = self.process_to_IDs_in_sparse_format(texts)
-            message_embeddings = session.run(
-                self._encodings,
-                feed_dict={
-                    self._input_placeholder.values: values,
-                    self._input_placeholder.indices: indices,
-                    self._input_placeholder.dense_shape: dense_shape
-                }
-            )
+        with self._graph.as_default():
+            with tf.Session() as session:
+                session.run([tf.global_variables_initializer(), tf.tables_initializer()])
+                values, indices, dense_shape = self.process_to_IDs_in_sparse_format(texts)
+                message_embeddings = session.run(
+                    self._encodings,
+                    feed_dict={
+                        self._input_placeholder.values: values,
+                        self._input_placeholder.indices: indices,
+                        self._input_placeholder.dense_shape: dense_shape
+                    }
+                )
 
         return message_embeddings
 
