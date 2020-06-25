@@ -1,4 +1,6 @@
 from typing import List
+from cachetools import cached, LRUCache, TTLCache
+
 from search_engine_core import db
 from search_engine_core.db.models import Pages as DbPages
 
@@ -11,16 +13,17 @@ from .base import Querier
 class SimpleQuerier(Querier):
 
     def get(self, text: str) -> List[DbPage]:
+        """
+        find similar pages to the given text using its vector.
+        :param text:
+        :return: list of pages
+        """
         vector = encode(text=text)
         pages = self._query_all_pages()
         similar_pages = find_similar_pages(vector=vector, pages=pages)
         return similar_pages
 
-    def _query_all_pages_cached(self):
-        if not hasattr(self, '_db_pages_cache'):
-            self._db_pages_cache = self._query_all_pages()
-        return self._db_pages_cache
-
+    @cached(cache=TTLCache(maxsize=1024, ttl=600))
     def _query_all_pages(self):
         db_interface = db.DbInterfaceSingleton()
         with db_interface.session_scope() as session:

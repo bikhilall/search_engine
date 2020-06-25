@@ -5,9 +5,12 @@ from search_engine_core.db.models import Pages as DbPage
 
 
 def find_similar_pages(vector: List[float], pages: List[DbPage]) -> List[DbPage]:
-    similar_page = None
-    shortest_distance = float('inf')
-
+    """
+    This function will sort all pages based on distance from the given vector and return the closest page.
+    :param vector:
+    :param pages:
+    :return: page
+    """
     Pages_distance = [
         {
             "page": page,

@@ -18,8 +18,3 @@ class Config():
 
     def __setattr__(self, name):
         return setattr(self.instance, name)
-
-
-if __name__ == "__main__":
-    config = Config()
-    config = Config()

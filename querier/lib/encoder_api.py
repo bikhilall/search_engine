@@ -21,10 +21,3 @@ class EncoderApi:
 def encode(text: str) -> List[float]:
     encoder_api = EncoderApi(base_url=os.environ['ENCODER_API_BASE_URL'])
     return encoder_api.encode([text])[0]['vector']
-
-
-if __name__== "__main__":
-    import os
-    os.environ['ENCODER_API_BASE_URL'] = 'http://localhost:8080'
-    v = encode('test case')
-    print(v)

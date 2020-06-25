@@ -1,4 +1,3 @@
-import time
 from datetime import datetime, timedelta
 
 import pytz
@@ -10,9 +9,14 @@ from crawler import crawl
 
 
 def initiate():
+    """
+    initiate crawler by reading config, setting up db
+    :return:
+    """
     # Get Config
     config = Config()
     config.read('config.ini')
+
     # create all tables
     db_interface = db.DbInterfaceSingleton(host='mysql')
     db.create_all()

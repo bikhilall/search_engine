@@ -21,12 +21,18 @@ class DbInterface:
 
     @classmethod
     def conn(cls):
+        """ connection """
         if not hasattr(cls, '_conn'):
             cls._conn = cls._get_conn()
 
         return cls._conn
 
     def execute(self, queries: List) -> List:
+        """
+        execute a list of queries
+        :param queries:
+        :return: queries result
+        """
         trans = self.conn.begin()
         results = []
 
@@ -58,6 +64,11 @@ class DbInterface:
             session.close()
 
     def merge(self, objs: List):
+        """
+        merge a list of db objects
+        :param objs: db objects
+        :return: None
+        """
         with self.session_scope() as session:
             for obj in objs:
                 session.merge(obj)

@@ -12,11 +12,22 @@ db_interface = db.DbInterfaceSingleton()
 
 
 def encode_all(texts: List[str]) -> List[float]:
+    """
+    encode a list of texts using encoder and returns a vector
+    :param texts: list of texts
+    :return: vector
+    """
     encoder_api = EncoderApi(base_url=os.environ['ENCODER_API_BASE_URL'])
     return encoder_api.encode(texts)
 
 
-def page_processor(response, domain, *kws, **kwargs):
+def page_processor(response, domain: db_models.Domaines, *kws, **kwargs):
+    """
+    This function process the page.
+    :param response: html response from calling the page
+    :param domain:
+    :return: None
+    """
     page = parser.Page(response)
     content_vector = encode(page.content[:1000])
     title_vector = encode(page.title)
@@ -31,6 +42,12 @@ def page_processor(response, domain, *kws, **kwargs):
 
 
 def crawl(domains: List[db_models.Domaines], ignore_urls: List[str] = []):
+    """
+    crawl a list of domains
+    :param domains: domains to crawl
+    :param ignore_urls: urls to ignore
+    :return: None
+    """
     # build spiders
     active_spiders = []
     for domain in domains:

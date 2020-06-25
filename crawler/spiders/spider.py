@@ -1,6 +1,7 @@
 import scrapy
 from scrapy.linkextractors import LinkExtractor
 
+
 class Spider(scrapy.Spider):
     custom_settings = {
         'DEPTH_LIMIT': 10
@@ -10,6 +11,7 @@ class Spider(scrapy.Spider):
     link_extractor = LinkExtractor()
 
     def parse(self, response):
+        """parse the html response"""
         self.visited_urls.add(response.url)
         yield self.processor(response)
 
