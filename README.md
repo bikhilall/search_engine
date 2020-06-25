@@ -4,5 +4,5 @@ This web search engine uses Google Multilingual Universal Sentence Encoder (GUSE
 Inorder to run, you need to build the project first:
 `make build`
 
-run:
+Then:
 `make run`
