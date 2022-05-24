@@ -3,5 +3,5 @@ Werkzeug==0.16.1
 uWSGI==2.0.18
 python_dateutil == 2.6.0
 sentencepiece == 0.1.83
-tensorflow == 1.15
+tensorflow == 2.6.4
 tensorflow-hub == 0.7.0
