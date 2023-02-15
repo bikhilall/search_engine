@@ -1,5 +1,5 @@
 connexion == 2.2.0
-Werkzeug==0.16.1
+Werkzeug==2.2.3
 uWSGI==2.0.18
 python_dateutil == 2.6.0
 sentencepiece == 0.1.83
